@@ -1,0 +1,171 @@
+---
+title: "WBA_EDA"
+author: "Benjamin Tan"
+date: '2022-08-26'
+output: 
+  pdf_document:
+    toc: true
+    number_sections: TRUE
+---
+
+```{r}
+rm(list=ls())
+cluster_vars <- c("Gender", "AgeY", "SSC")
+num_clust <- 2
+# Gender AgeY ECV TPP
+```
+
+# Libraries and Reading in Data
+
+```{r}
+library(dplyr)
+library(magrittr)
+library(tidyr)
+library(tidyverse)
+library(ggplot2)
+library(stringr)
+
+# Clustering
+library(fpc)
+library(cluster)
+library(factoextra)
+library(ggpubr) # For plotting
+```
+
+```{r}
+wba_data <- read.csv("WBA_data.csv")
+```
+
+# Data Cleaning
+
+## Cleaning Frequency Values
+```{r}
+cnames <- colnames(wba_data)
+
+# Columns 40 and beyond are frequencies for WBA
+cnames[40:length(cnames)] %<>%
+  str_replace_all("f", "") %>%
+  str_sub(2,-2)
+
+colnames(wba_data) <- cnames
+```
+
+
+## Wide to Long Format
+```{r}
+frequencies <- colnames(wba_data)[40:length(colnames(wba_data))]
+```
+
+```{r}
+wba_long <- wba_data %>%
+  pivot_longer(cols=frequencies,
+               names_to = "freq",
+               values_to="wba")
+```
+
+
+```{r}
+wba_long$OverallPoF <- as.factor(wba_long$OverallPoF)
+wba_long$freq <- as.numeric(wba_long$freq)
+wba_long$freq <- as.factor(wba_long$freq)
+
+wba_long %>% 
+  # filter(OverallPoF == 0) %>%
+  ggplot(mapping=aes(x=freq, y=wba, colour=OverallPoF)) +
+  geom_point() + 
+  scale_color_manual(values=c("0" = "lightblue", "1" = "pink")) +
+  labs(title="WBA Distribution", x="Frequency",y="WBA") +
+  theme_classic() +
+  theme(
+    # axis.title.x=element_blank(),
+    axis.text.x=element_blank())
+    # axis.ticks.x=element_blank())
+```
+
+# Optimal Number of Clusters
+
+## Clustering Variables
+Specifying which variables to cluster by
+
+```{r}
+wba_data[cluster_vars] %<>%
+  scale()
+```
+
+
+```{r}
+frequencies <- colnames(wba_data)[40:length(colnames(wba_data))]
+
+cluster_vars <- c("Gender", "AgeY", "ECV", "TPP")
+
+```
+
+```{r}
+optimal_clusters <-
+  wba_data[cluster_vars] %>%
+  NbClust::NbClust(
+    data = .,
+    distance = "euclidean",
+    
+    # Assessing 2-10 clusters
+    min.nc = 2,
+    max.nc = 10,
+    method = "ward.D2",
+    
+    # All optimal cluster criterion
+    index = "all"
+  )
+```
+
+## Distance Matrix
+
+
+```{r}
+# wba_data[cluster_vars] %<>%
+#   scale()
+
+dist_matrix <- dist(wba_data[cluster_vars], method="euclidean")
+```
+
+
+# Hierarchical Clustering
+```{r}
+# Hierarchical clustering object
+# Ward's clustering method minimises within-cluster variance 
+h_clust <- hclust(dist_matrix, method="ward.D2") 
+
+# Hierarchical clustering dendrogram object (for visualisation)
+h_clust_dend <- as.dendrogram(h_clust)
+```
+
+```{r}
+plot(h_clust)#, labels=state_inputs$sa2_name, main="Cluster Dendrogram for (Perth) SA2 Zones")
+rect.hclust(h_clust, k=num_clust) # k=5 means we want rectangles to be put around 5 clusters
+```
+
+## Assessing Clusters
+
+```{r}
+hclust_groups <- cutree(h_clust, k=num_clust)
+
+# Function that...
+print_clusters <- function(df, groups, cols_to_print) {
+  Ngroups <- max(groups)
+  for (i in 1:Ngroups) {
+    print(paste("cluster", i, "------------------------------------------------------------------------"))
+    print(df[groups == i, cols_to_print])
+  }
+}
+
+cols_to_print <- "OverallPoF" # colnames(state_inputs) to review all clustering variable values 
+print_clusters(wba_data, hclust_groups, cols_to_print)
+```
+
+# kMeans Clustering
+```{r}
+km_clusters <- kmeans(wba_data[cluster_vars], 
+                     num_clust, 
+                     nstart = 100, 
+                     iter.max=100)
+```
+
