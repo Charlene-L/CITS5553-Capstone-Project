@@ -1,0 +1,6 @@
+"0","# Hierarchical clustering object"
+"0","# Ward's clustering method minimises within-cluster variance "
+"0","h_clust <- hclust(dist_matrix, method=""ward.D2"") "
+"0",""
+"0","# Hierarchical clustering dendrogram object (for visualisation)"
+"0","h_clust_dend <- as.dendrogram(h_clust)"

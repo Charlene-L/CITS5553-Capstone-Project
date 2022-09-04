@@ -1,0 +1,1 @@
+"0","frequencies <- colnames(wba_data)[40:length(colnames(wba_data))]"

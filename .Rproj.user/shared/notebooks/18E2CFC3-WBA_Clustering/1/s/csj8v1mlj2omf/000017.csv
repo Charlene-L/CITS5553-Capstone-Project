@@ -1,0 +1,20 @@
+"0","optimal_clusters <-"
+"0","  wba_data[cluster_vars] %>%"
+"0","  NbClust::NbClust("
+"0","    data = .,"
+"0","    distance = ""euclidean"","
+"0","    "
+"0","    # Assessing 2-10 clusters"
+"0","    min.nc = 2,"
+"0","    max.nc = 10,"
+"0","    method = ""ward.D2"","
+"0","    "
+"0","    # All optimal cluster criterion"
+"0","    index = ""all"""
+"0","  )"
+"1","*** : The Hubert index is a graphical method of determining the number of clusters.
+                In the plot of Hubert index, we seek a significant knee that corresponds to a 
+                significant increase of the value of the measure i.e the significant peak in Hubert
+                index second differences plot. 
+ 
+"
