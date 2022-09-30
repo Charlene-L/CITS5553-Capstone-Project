@@ -10,7 +10,8 @@ output:
 
 ```{r}
 rm(list=ls())
-cluster_vars <- c("Gender", "AgeY", "ECV")
+all_cols <- c("Subject","Gender","AgeY","ECV","TPP","SC","TympType","OAE1","OAE1.4","OAE2","OAE2.8","OAE4","OverallPoF","Ear.coded","Pressure")
+cluster_vars <- c("ECV","OAE1","OAE1.4","OAE2","OAE2.8","OAE4")
 num_clust <- 2
 # Gender AgeY ECV TPP
 ```
@@ -33,8 +34,13 @@ library(ggpubr) # For plotting
 ```
 
 ```{r}
-wba_data <- read.csv("WBA_data.csv")
+wba_data <- read.csv("WBA_data_CLEAN.csv")
 ```
+
+```{r}
+colnames(wba_data)
+```
+
 
 # Data Cleaning
 
@@ -157,7 +163,7 @@ print_clusters <- function(df, groups, cols_to_print) {
   }
 }
 
-cols_to_print <- "OverallPoF" # colnames(state_inputs) to review all clustering variable values 
+cols_to_print <- "ECV" # colnames(state_inputs) to review all clustering variable values 
 print_clusters(wba_data, hclust_groups, cols_to_print)
 ```
 
