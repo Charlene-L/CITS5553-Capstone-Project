@@ -1,0 +1,20 @@
+---
+title: "vae_plotting"
+author: "Benjamin Tan"
+date: '2022-10-18'
+output: pdf_document
+---
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(magrittr)
+
+library(ggplot2)
+```
+
+
+```{r}
+gen_df <- read.csv('')
+```
+
