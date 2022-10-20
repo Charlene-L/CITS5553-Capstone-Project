@@ -38,6 +38,12 @@ gen_df$AgeY %>% ggplot(mapping = aes(x = ))
 
 
 
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+
 
 
 
