@@ -1,8 +1,0 @@
-"0","cnames <- colnames(wba_data)"
-"0",""
-"0","# Columns 40 and beyond are frequencies for WBA"
-"0","cnames[40:length(cnames)] %<>%"
-"0","  str_replace_all(""f"", """") %>%"
-"0","  str_sub(2,-2)"
-"0",""
-"0","colnames(wba_data) <- cnames"

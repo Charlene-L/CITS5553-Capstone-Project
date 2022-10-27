@@ -1,6 +1,0 @@
-"0","km_clusters <- kmeans(wba_data[cluster_vars], "
-"0","                     num_clust, "
-"0","                     nstart = 100, "
-"0","                     iter.max=100)"
-"2","Error in do_one(nmeth) : NA/NaN/Inf in foreign function call (arg 1)
-"

@@ -1,4 +1,0 @@
-"0","# wba_data[cluster_vars] %<>%"
-"0","#   scale()"
-"0",""
-"0","dist_matrix <- dist(wba_data[cluster_vars], method=""euclidean"")"

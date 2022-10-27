@@ -1,4 +1,0 @@
-"0","frequencies <- colnames(wba_data)[40:length(colnames(wba_data))]"
-"0",""
-"0","cluster_vars <- c(""Gender"", ""AgeY"", ""ECV"", ""TPP"")"
-"0",""
