@@ -3,6 +3,7 @@
 ## Exploratory data Analysis
 
 To take a quick look at the data set and look for any correlations between the frequencies. 
+And find two main problem of WBA dataset: Class-imbalanced and multicollinearity.
 
 ## Feature Selection
 
